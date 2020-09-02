@@ -1,0 +1,53 @@
+@import 'styles/abstracts/abstracts.scss';
+
+.container {
+  &:hover {
+    .edit,
+    .favorite {
+      visibility: visible;
+      opacity: 1;
+    }
+    .img {
+      opacity: 0.5;
+    }
+  }
+}
+
+.img {
+  visibility: visible;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.favorite {
+  width: px(34);
+  height: px(34);
+  border-radius: 50%;
+  font-size: px(20);
+  background-color: #fff;
+  top: px(10);
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+  @include autoDirection((
+    right: px(10)
+  ))
+}
+
+.favoriteLight {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+.edit {
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.editBtn {
+  padding: px(8);
+  width: 100%;
+  border-radius: px(4);
+}

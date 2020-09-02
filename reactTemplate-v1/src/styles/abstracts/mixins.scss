@@ -1,0 +1,377 @@
+@mixin absFull($zIndex) {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: $zIndex;
+    @content;
+}
+
+@mixin absAlign($vertical: 50%, $horizontal: 50%) {
+    @if ($horizontal == 'left') {
+        $horizontal: 0;
+    } @else if ($horizontal == 'center') {
+        $horizontal: 50%;
+    } @else if ($horizontal == 'right') {
+        $horizontal: 100%;
+    }
+    @if ($vertical == 'top') {
+        $vertical: 0;
+    } @else if ($vertical == 'center') {
+        $vertical: 50%;
+    } @else if ($vertical == 'bottom') {
+        $vertical: 100%;
+	}
+	position: absolute;
+    top: $vertical;
+    left: $horizontal;
+    transform: translate($horizontal * (-1), $vertical * (-1));
+}
+
+@mixin size($width, $height: $width, $lineHeight: $height) {
+    width: $width;
+	height: $height;
+	line-height: $lineHeight;
+    @content;
+}
+
+@mixin placeholder($type: "") {
+	$placeholders: ":-webkit-input" ":-moz" "-ms-input";
+	@each $placeholder in $placeholders {
+		@if($type == "default") {
+			:#{$placeholder}-placeholder {
+				@content;
+			}
+		} @else {
+			&:#{$placeholder}-placeholder {
+				@content;
+			}
+		}
+	}
+}
+
+@mixin text-ellipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+    white-space: nowrap;
+	@content;
+}
+
+@mixin arrow($opt) {
+    $defaultOpts: (
+        pseudo: after,
+        width: 10px,
+        color: $color-primary,
+        position: 'bottom center'
+    );
+    $opts: map-merge($defaultOpts, $opt);
+
+    // css
+    &:#{ map-get($opts, 'pseudo') } {
+        content: '';
+        display: block;
+        width: 0;
+        height: 0;
+        border: solid transparent;
+        border-width: map-get($opts, 'width');
+
+        @if ( map-get($opts, 'position') == 'top center' ) {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -100%);
+            border-bottom-color: map-get($opts, 'color');
+        }
+
+        @if ( map-get($opts, 'position') == 'bottom center' ) {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 100%);
+            border-top-color: map-get($opts, 'color');
+        }
+
+        @if ( map-get($opts, 'position') == 'center left' ) {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translate(-100%, -50%);
+            border-right-color: map-get($opts, 'color');
+        }
+
+        @if ( map-get($opts, 'position') == 'center right' ) {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translate(100%, -50%);
+            border-left-color: map-get($opts, 'color');
+        }
+
+    }
+}
+
+@mixin progressColor2($el, $opts) {
+	$color: '';
+	@for $i from 0 through 10 {
+        @each $key, $val in $opts {
+            @if ($key <= $i) {
+                $color: $val;
+            }
+		}
+		// one two three four five six seven eight nine ten
+        #{$el} {
+			@if ( $i == 0 ) {
+				&[data-tenmode^="#{$i}"] {
+					color: $color-dark-4;
+				}
+			}
+
+			@if ( $i == 1 ) {
+				&[data-tenmode^="#{$i}"] {
+					color: $terrible;
+				}
+			}
+
+			@if ( $i == 2 ) {
+				&[data-tenmode^="#{$i}"] {
+					color: $terrible;
+				}
+			}
+
+			@if ( $i == 3 ) {
+				&[data-tenmode^="#{$i}"] {
+					color: $poor;
+				}
+			}
+
+			@if ( $i == 4 ) {
+				&[data-tenmode^="#{$i}"] {
+					color: $poor;
+				}
+			}
+
+			@if ( $i == 5 ) {
+				&[data-tenmode^="#{$i}"] {
+					color: $average;
+				}
+			}
+
+			@if ( $i == 6 ) {
+				&[data-tenmode^="#{$i}"] {
+					color: $average;
+				}
+			}
+
+			@if ( $i == 7 ) {
+				&[data-tenmode^="#{$i}"] {
+					color: $verygood;
+				}
+			}
+
+			@if ( $i == 8 ) {
+				&[data-tenmode^="#{$i}"] {
+					color: $verygood;
+				}
+			}
+
+			@if ( $i == 9 ) {
+				&[data-tenmode^="#{$i}"] {
+					color: $excellent;
+				}
+			}
+
+			@if ( $i == 10 ) {
+				&[data-tenmode^="#{$i}"] {
+					color: $excellent;
+				}
+			}
+
+            &[data-rated^="#{$i}"] {
+                color: $color;
+            }
+        }
+    }
+}
+
+@mixin bd-radius($radius){
+	border-radius: $radius;
+}
+
+@mixin clearfix {
+	&:after {
+		content: '';
+		display: block;
+		clear: both;
+	}
+}
+
+@mixin shimmerload($url){
+	&:before {
+		content: '';
+		background-color: #f5f6f7;
+		background-image: url($url);
+		background-repeat: repeat-y;
+		background-size: 100vw 1px;
+		content: ' ';
+		display: block;
+		height: 100%;
+	}
+}
+
+@mixin list-style($value: none) {
+	list-style: $value;
+	@if ($value == 'none') {
+		margin: 0;
+		padding: 0;
+	}
+	@content;
+}
+
+
+@mixin progressColor($el, $opts, $property: 'left') {
+	$color: '';
+	$attrSelectorFix: '';
+	@for $i from 0 through 10 {
+        @each $key, $val in $opts {
+            @if ($key <= $i) {
+                $color: $val;
+            }
+		}
+		$attrSelector: '&[style^="#{$property}: ' + $i + '"],&[style^="#{$property}:' + $i + '"]';
+        #{$el} {
+            #{$attrSelector} {
+                background-color: $color !important;
+            }
+		}
+
+		$attrSelectorFix: $attrSelectorFix + ' &[style^="#{$property}: ' + $i + '."],&[style^="#{$property}: ' + $i + '%"],';
+	}
+	#{$el} {
+		#{$attrSelectorFix} {
+			background-color: map-get($opts, 0);
+		}
+	}
+}
+
+@mixin socialColor($el, $opt) {
+	$optDefault: (
+		type: 'hover',
+		value: 'color',
+		social: (
+			'facebook': #325d94,
+			'twitter': #00aadb,
+			'flickr': #ff0084,
+			'tumblr': #2f4e6b,
+			'dribbble': #fb4087,
+			'youtube-play': #df2e1c,
+			'youtube': #df2e1c,
+			'vk': #4c75a3,
+			'digg': #1b5891,
+			'reddit': #ff4500,
+			'medium': #00ab6c,
+			'tripadvisor': #00af87,
+			'wikipedia-w': #636466,
+			'skype': #00aff0,
+			'linkedin': #1686b0,
+			'whatsapp': #25d366,
+			'stumbleupon': #eb4924,
+			'google-plus': #db4437,
+			'vimeo-square': #63b3e4,
+			'vimeo': #63b3e4,
+			'instagram': #517fa4,
+			'pinterest': #cc1d24,
+			'behance': #1478ff,
+			'heart': #4bd1fa,
+			'github': #24292e,
+			'envelope': #5540f7,
+			'link': #f06292,
+			'odnoklassniki': #ee8208
+		)
+	);
+	$opts: map-merge($optDefault, $opt);
+	@each $selector, $color in map-get($opts, 'social') {
+		#{$el} {
+			$children: if(map-get($opts, 'type') == 'hover', '&:hover [class*="' + $selector + '"]', '[class*="' + $selector + '"]');
+
+			#{$children} {
+				#{map-get($opts, 'value')}: $color;
+			}
+		}
+	}
+
+}
+
+@mixin linear-gradient($from, $to) {
+	background: $to;
+	  background: -moz-linear-gradient(top, $from 0%, $to 100%);
+	  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$from), color-stop(100%,$to));
+	  background: -webkit-linear-gradient(top, $from 0%,$to 100%);
+	  background: -o-linear-gradient(top, $from 0%,$to 100%);
+	  background: linear-gradient(to bottom, $from 0%,$to 100%);
+	  filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr=#{$from}, endColorstr=#{$to})
+  }
+  @mixin position($position, $args: ()) {
+	$offsets: top right bottom left;
+	position: $position;
+
+	@each $offset in $offsets {
+				// Doing the magic trick
+			// All this code happens inside the loop
+			$index: index($args, $offset);
+
+			// If offset is found in the list
+			@if $index {
+			// If it is found at last position
+			@if $index == length($args) {
+				#{$offset}: 0;
+			}
+
+			// If it is followed by a value
+			@else {
+				$next: nth($args, $index + 1);
+
+				// If the next value is value length
+				@if is-valid-length($next) {
+				#{$offset}: $next;
+				}
+
+				// If the next value is another offset
+				@else if index($offsets, $next) {
+				#{$offset}: 0;
+				}
+
+				// If it is invalid
+				@else {
+				@warn "Invalid value `#{$next}` for offset `#{$offset}`.";
+				}
+			}
+		}
+	}
+  }
+
+  @mixin absolute($args: ()) {
+	@include position(absolute, $args);
+  }
+
+  @mixin fixed($args: ()) {
+	@include position(fixed, $args);
+  }
+
+  @mixin relative($args: ()) {
+	@include position(relative, $args);
+  }
+
+  $defaultOpt: (
+	loop: 10
+);
+@mixin socialAnimation($classes, $opts: $defaultOpt) {
+	#{$classes} {
+		$loop: map-get($opts, 'loop');
+		@for $i from 0 through $loop {
+			&:nth-child(#{$i}) {
+				transition-delay: $i * 0.1s;
+			}
+		}
+	}
+}

@@ -1,0 +1,28 @@
+@import 'styles/abstracts/abstracts.scss';
+
+@include wilMenu('.container', (
+  menuClass: 'menu',
+  theme: 'style1',
+  align: 'left',
+  breakpoint: 600,
+  css: (
+    color: $color-dark-2,
+    padding: px(10) px(20),
+    hover: (
+      color: $color-primary
+    )
+  ),
+  arrow: (
+    use: 'LineAwesome',
+    icon: 'la-caret-down'
+  ),
+  subMenu: (
+    class: 'subMenu',
+    parentClass: 'menu-item-has-children',
+    align: 'right',
+    position: 'left',
+    animate: (
+      effect: 'fadeUp'
+    ),
+  )
+))

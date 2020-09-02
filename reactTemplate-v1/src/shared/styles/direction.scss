@@ -1,0 +1,104 @@
+@function getPropertyWithDirection($property) {
+  @if ($property == 'margin-left') {
+    @return 'margin-right';
+  }
+  @if ($property == 'margin-right') {
+    @return 'margin-left';
+  }
+  @if ($property == 'padding-left') {
+    @return 'padding-right';
+  }
+  @if ($property == 'padding-right') {
+    @return 'padding-left';
+  }
+  @if ($property == 'border-left') {
+    @return 'border-right';
+  }
+  @if ($property == 'border-right') {
+    @return 'border-left';
+  }
+  @if ($property == 'border-left-style') {
+    @return 'border-right-style';
+  }
+  @if ($property == 'border-right-style') {
+    @return 'border-left-style';
+  }
+  @if ($property == 'border-left-width') {
+    @return 'border-right-width';
+  }
+  @if ($property == 'border-right-width') {
+    @return 'border-left-width';
+  }
+  @if ($property == 'border-left-color') {
+    @return 'border-right-color';
+  }
+  @if ($property == 'border-right-color') {
+    @return 'border-left-color';
+  }
+  @if ($property == 'left') {
+    @return 'right';
+  }
+  @if ($property == 'right') {
+    @return 'left';
+  }
+  @if ($property == 'border-bottom-left-radius') {
+    @return 'border-bottom-right-radius';
+  }
+  @if ($property == 'border-bottom-right-radius') {
+    @return 'border-bottom-left-radius';
+  }
+  @if ($property == 'border-top-left-radius') {
+    @return 'border-top-right-radius';
+  }
+  @if ($property == 'border-top-right-radius') {
+    @return 'border-top-left-radius';
+  }
+  @return '#{$property}';
+}
+
+@function getValueList($values) {
+  $result: '';
+  @for $i from 1 through length($values) {
+    $value: nth($values, $i);
+    $result: $result + getPropertyWithDirection($value) + if($i == length($values), '', ', ');
+  }
+  @return $result;
+}
+
+@function getValueWithDirection($value) {
+  @if ($value == 'left') {
+    @return 'right';
+  }
+  @if ($value == 'right') {
+    @return 'left';
+  }
+  @if (type-of($value) == 'list') {
+    @return unquote(getValueList($value));
+  }
+  @return unquote(getPropertyWithDirection($value));
+}
+
+@mixin autoDirection($css) {
+  [dir="ltr"] & {
+    @each $property, $value in $css {
+      #{$property}: $value;
+    }
+  }
+  [dir="rtl"] & {
+    @each $property, $value in $css {
+      #{getPropertyWithDirection($property)}: getValueWithDirection($value);
+    }
+  }
+}
+
+@mixin ltrDirection {
+  [dir="ltr"] & {
+    @content;
+  }
+}
+
+@mixin rtlDirection {
+  [dir="rtl"] & {
+    @content;
+  }
+}

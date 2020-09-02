@@ -1,0 +1,1123 @@
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////																									////
+////	 __     __  __  __      ______  __  __  ______       __    __  ______  __   __  __  __    		////
+////	/\ \  _ \ \/\ \/\ \    /\  __ \/\ \/ / /\  ___\     /\ "-./  \/\  ___\/\ "-.\ \/\ \/\ \   		////
+////	\ \ \/ ".\ \ \ \ \ \___\ \ \/\ \ \  _"-\ \  __\     \ \ \-./\ \ \  __\\ \ \-.  \ \ \_\ \  		////
+////	 \ \__/".~\_\ \_\ \_____\ \_____\ \_\ \_\ \_____\    \ \_\ \ \_\ \_____\ \_\\"\_\ \_____\ 		////
+////	  \/_/   \/_/\/_/\/_____/\/_____/\/_/\/_/\/_____/     \/_/  \/_/\/_____/\/_/ \/_/\/_____/ 		////
+////																									////
+////																									////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////																									////
+//// 	MENU BY WILOKE																					////
+////	Version: 2.3.2																					////
+////	Website: wiloke.com																				////
+////																									////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+@function wilMenu($option) {
+	$optionDefault: (
+		align: 'center',
+		menuClass: 'menu-list',
+		currentClass: 'current-menu-item',
+		currentParentClass: 'current-menu-parent',
+		theme: 'default',
+        breakpoint: 1000,
+		colorHover: #000,
+		arrow: null, // Option example use: FontAwesome support, icon: fa-angel-down
+		css: ( // Set css basic
+			font-size: 14px,
+			color: #000,
+			transition: all 300ms ease,
+			hover: (
+				color: #4aa8ff
+			),
+			current: (
+				color: #4aa8ff
+			)
+		),
+		subMenu: (
+			class: 'sub-menu',
+			parentClass: 'menu-item-has-children',
+			width: 200,
+			align: 'left',
+			position: 'right',
+			arrow: null,
+			css: ( // Set css basic
+				font-size: 14px,
+				transition: all 300ms ease,
+				hover: (
+					color: #4aa8ff
+				)
+			),
+			animate: (
+				easing: ease, // transition-timing-function css & Wiloke Easing Css
+				time: 300,
+				effect: 'fade' // fade, zoom, fadeUp, fadeDown, fadeLeft, fadeRight, slideUp, slideDown, slideLeft, slideRight, rotateLeftUp, rotateRightUp
+			)
+		),
+        menuMobile: (
+            align: 'left',
+            width: 280,
+            theme: 'default',
+            arrow: null,
+            background: null,
+            toggleClass: 'active',
+			classButtonToggle: 'toggle-menu',
+            css: (
+                padding: 12px 15px,
+                hover: (
+                    color: #4aa8ff
+                ),
+                toggle: (
+                    color: #4aa8ff
+                ),
+				current: (
+					color: #4aa8ff
+				)
+            ),
+            animate: (
+				easing: ease, // transition-timing-function css & Wiloke Easing Css
+				time: 300
+			),
+            subMenu: (
+                toggleClass: 'active',
+                css: (
+                    padding: 12px 15px,
+                    hover: (
+                        color: #4aa8ff
+                    ),
+                    toggle: (
+                        color: #4aa8ff
+                    )
+                )
+            )
+        ),
+		responsiveByJavascript: (
+			enable: false,
+			classLarge: 'navigation--large',
+			classSmall: 'navigation--small',
+		),
+        devTest: false
+	);
+	$options: extend($optionDefault, $option, true);
+	@return $options;
+}
+
+
+// Font awesome support
+$menu_arrow: (
+	'fa-angle-up': '',
+	'fa-angle-right': '',
+	'fa-angle-down': '',
+	'fa-angle-left': '',
+
+	'fa-arrow-circle-up': '',
+	'fa-arrow-circle-right': '',
+	'fa-arrow-circle-down': '',
+	'fa-arrow-circle-left': '',
+
+	'fa-arrow-circle-o-up': '',
+	'fa-arrow-circle-o-right': '',
+	'fa-arrow-circle-o-down': '',
+	'fa-arrow-circle-o-left': '',
+
+	'fa-arrow-up': '',
+	'fa-arrow-right': '',
+	'fa-arrow-down': '',
+	'fa-arrow-left': '',
+
+	'fa-angle-double-up': '',
+	'fa-angle-double-right': '',
+	'fa-angle-double-down': '',
+	'fa-angle-double-left': '',
+
+	'fa-chevron-up': '',
+	'fa-chevron-right': '',
+	'fa-chevron-down': '',
+	'fa-chevron-left': '',
+
+	'fa-chevron-circle-up': '',
+	'fa-chevron-circle-right': '',
+	'fa-chevron-circle-down': '',
+	'fa-chevron-circle-left': '',
+
+	'fa-caret-up': '',
+	'fa-caret-right': '',
+	'fa-caret-down': '',
+	'fa-caret-left': ''
+);
+
+// Wiloke easing
+$wilEasing: (
+	'easeInCubic': 			cubic-bezier(0.550, 0.055, 0.675, 0.190),
+	'easeOutCubic': 		cubic-bezier(0.215, 0.610, 0.355, 1.000),
+	'easeInOutCubic': 		cubic-bezier(0.645, 0.045, 0.355, 1.000),
+
+	'easeInCirc': 			cubic-bezier(0.600, 0.040, 0.980, 0.335),
+	'easeOutCirc': 			cubic-bezier(0.075, 0.820, 0.165, 1.000),
+	'easeInOutCirc': 		cubic-bezier(0.785, 0.135, 0.150, 0.860),
+
+	'easeInExpo': 			cubic-bezier(0.950, 0.050, 0.795, 0.035),
+	'easeOutExpo': 			cubic-bezier(0.190, 1.000, 0.220, 1.000),
+	'easeInOutExpo': 		cubic-bezier(1.000, 0.000, 0.000, 1.000),
+
+	'easeInQuad': 			cubic-bezier(0.550, 0.085, 0.680, 0.530),
+	'easeOutQuad': 			cubic-bezier(0.165, 0.840, 0.440, 1.000),
+	'easeInOutQuad': 		cubic-bezier(0.770, 0.000, 0.175, 1.000),
+
+	'easeInQuart': 			cubic-bezier(0.755, 0.050, 0.855, 0.060),
+	'easeOutQuart': 		cubic-bezier(0.165, 0.840, 0.440, 1.000),
+	'easeInOutQuart': 		cubic-bezier(0.770, 0.000, 0.175, 1.000),
+
+	'easeInQuint': 			cubic-bezier(0.755, 0.050, 0.855, 0.060),
+	'easeOutQuint': 		cubic-bezier(0.230, 1.000, 0.320, 1.000),
+	'easeInOutQuint': 		cubic-bezier(0.860, 0.000, 0.070, 1.000),
+
+	'easeInSine': 			cubic-bezier(0.470, 0.000, 0.745, 0.715),
+	'easeOutSine': 			cubic-bezier(0.390, 0.575, 0.565, 1.000),
+	'easeInOutSine': 		cubic-bezier(0.445, 0.050, 0.550, 0.950),
+
+	'easeInBack': 			cubic-bezier(0.600, -0.280, 0.735, 0.045),
+	'easeOutBack': 			cubic-bezier(0.175,  0.885, 0.320, 1.275),
+	'easeInOutBack': 		cubic-bezier(0.680, -0.550, 0.265, 1.550),
+);
+
+
+// Map deep get
+@function map-deep-get($map, $keys...) {
+	@each $key in $keys {
+		$map: map-get($map, $key);
+	}
+	@return $map;
+}
+
+// Extend
+@function extend($map, $maps.../*, $deep */) {
+	$last: nth($maps, -1);
+	$deep: $last == true;
+	$max: if($deep, length($maps) - 1, length($maps));
+  	@for $i from 1 through $max {
+    	$current: nth($maps, $i);
+
+    	@if not $deep {
+      		$map: map-merge($map, $current);
+    	} @else {
+      		@each $key, $value in $current {
+
+	        	@if type-of($value) == "map" and type-of(map-get($map, $key)) == "map" {
+	          		$value: extend(map-get($map, $key), $value, true);
+	        	}
+
+	        	$map: map-merge($map, ($key: $value));
+	      	}
+    	}
+  	}
+  	@return $map;
+}
+
+// Check number
+@function check_number_value($value, $unit, $option) {
+	$val: if(type-of($value) == number or type-of($value) == color, $value * 1#{$unit}, unquote($value));
+	@return $val;
+}
+
+// Check type of
+@function check_type_of($value, $option) {
+	$val: if(type-of($value) == number or type-of($value) == color or type-of($value) == list, $value, unquote($value));
+	@return $val;
+}
+
+// arrow
+@mixin menu_arrow($option) {
+	$self: wilMenu($option);
+	$get-parentClass: map-deep-get($self, 'subMenu', 'parentClass');
+	@if (type-of(map-deep-get($self, 'arrow')) == map) {
+		$get-arrow-use: map-deep-get($self, 'arrow', 'use');
+		$get-arrow-icon: map-deep-get($self, 'arrow', 'icon');
+		&.#{$get-parentClass} {
+			> a {
+				&:after {
+					font-family: $get-arrow-use;
+					content: map-deep-get($menu_arrow, $get-arrow-icon);
+					display: inline-block;
+					margin-left: 4px;
+				}
+			}
+		}
+	}
+}
+// arrow subMenu
+@mixin menu_subMenu_arrow($option) {
+	$self: wilMenu($option);
+	$get-parentClass: map-deep-get($self, 'subMenu', 'parentClass');
+	@if (type-of(map-deep-get($self, 'subMenu', 'arrow')) == map) {
+		$get-arrow-use: map-deep-get($self, 'subMenu', 'arrow', 'use');
+		$get-arrow-icon: map-deep-get($self, 'subMenu', 'arrow', 'icon');
+		&.#{$get-parentClass} {
+			> a {
+				&:after {
+					font-family: $get-arrow-use;
+					content: map-deep-get($menu_arrow, $get-arrow-icon);
+					position: absolute;
+					top: 50%;
+					@if (map-deep-get($self, 'theme') == null) {
+						right: 0;
+					}
+					transform: translate(0, -50%);
+				}
+			}
+		}
+	}
+}
+
+// arrow mobile
+@mixin menu_mobile_arrow($option) {
+	$self: wilMenu($option);
+	$get-parentClass: map-deep-get($self, 'subMenu', 'parentClass');
+	@if (type-of(map-deep-get($self, 'menuMobile', 'arrow')) == map) {
+		$get-arrow-use: map-deep-get($self, 'menuMobile', 'arrow', 'use');
+		$get-arrow-icon: map-deep-get($self, 'menuMobile', 'arrow', 'icon');
+		&.#{$get-parentClass} {
+			> a {
+				&:after {
+					font-family: $get-arrow-use;
+					content: map-deep-get($menu_arrow, $get-arrow-icon);
+					position: absolute;
+					top: 50%;
+					@if (map-deep-get($self, 'menuMobile', 'theme') == null) {
+						right: 0;
+					}
+					transform: translate(0, -50%);
+				}
+			}
+		}
+	}
+}
+
+// Menu css config
+@mixin menu_css($getCss, $option) {
+	@if (type-of($getCss) == map) {
+		@each $properties, $value in $getCss {
+			#{$properties}: check_type_of($value, $option)
+		}
+	}
+}
+
+// Themes
+@mixin menu_themes($option) {
+	$self: wilMenu($option);
+	$get-subMenu-class: map-deep-get($self, 'subMenu', 'class');
+	$get-color-hover: map-deep-get($self, 'css', 'hover', 'color');
+	// $get-transition: map-deep-get($self, 'css', 'transition');
+	// Default
+	%large-default {
+		a {
+			padding: 10px;
+		}
+	}
+	// Style1
+	%large-style1 {
+		a {
+			padding: 20px 30px;
+		}
+		.#{$get-subMenu-class} {
+			text-align: left;
+			padding: 0 2px;
+			li {
+				background-color: #111;
+			}
+			a {
+				color: #eee;
+				padding: 10px 15px;
+				border-bottom: 1px solid rgba(#fff, 0.15);
+				&:after {
+					right: 15px;
+				}
+			}
+		}
+	}
+
+	// Style2
+	%large-style2 {
+		a {
+			padding: 20px 30px;
+		}
+		.#{$get-subMenu-class} {
+			background-color: #fff;
+			text-align: left;
+			box-shadow: 0 2px 8px 0 rgba(#000, 0.1);
+			a {
+				padding: 10px 15px;
+				border-bottom: 1px solid rgba(#000, 0.05);
+				&:after {
+					right: 15px;
+				}
+			}
+		}
+	}
+
+	// Style3
+	%large-style3 {
+		a {
+			padding: 20px 30px;
+		}
+		.#{$get-subMenu-class} {
+			text-align: left;
+			padding: 0 2px;
+			li {
+				background-color: #111;
+				&:first-child {
+					padding-top: 18px;
+				}
+				&:last-child {
+					padding-bottom: 18px;
+				}
+			}
+			a {
+				color: #eee;
+				padding: 2px 25px;
+				&:after {
+					right: 15px;
+				}
+			}
+		}
+	}
+
+	// Style4
+	%large-style4 {
+		a {
+			padding: 20px 30px;
+		}
+		.#{$get-subMenu-class} {
+			background-color: #fff;
+			text-align: left;
+			border: 1px solid rgba(#000, 0.1);
+			border-top: 3px solid check_type_of($get-color-hover, $option);
+			a {
+				padding: 10px 15px;
+				border-top: 1px solid rgba(#000, 0.1);
+				&:after {
+					right: 15px;
+				}
+			}
+			li {
+				.#{$get-subMenu-class} {
+					top: -2px;
+				}
+				&:first-child {
+					> a {
+						border-top: 0;
+					}
+					.#{$get-subMenu-class} {
+						top: -3px;
+					}
+				}
+			}
+		}
+	}
+}
+
+// Small themes
+@mixin menu_small_themes($option) {
+    $self: wilMenu($option);
+    $get-toggleClass: map-deep-get($self, 'menuMobile', 'toggleClass');
+    $get-align: map-deep-get($self, 'menuMobile', 'align');
+    $get-subMenu: map-deep-get($self, 'subMenu', 'class');
+    $get-parentClass: map-deep-get($self, 'subMenu', 'parentClass');
+    $get-subMenu-toggleClass: map-deep-get($self, 'menuMobile', 'subMenu', 'toggleClass');
+    // General
+    %menu-small-general {
+        position: fixed;
+        top: 0;
+        will-change: transform;
+        a {
+            font-size: 14px;
+            &:after {
+                @if ($get-align == right) {
+                    left: 0;
+                } @else {
+                    right: 0;
+                }
+                width: 50px;
+                text-align: center;
+            }
+        }
+		.#{$get-subMenu} {
+			display: none;
+		}
+    }
+    // Dark
+    %menu-small-dark {
+        background-color: #111;
+        a {
+            border-bottom: 1px solid rgba(#fff, 0.1);
+            color: #eee;
+            &:after {
+                @if ($get-align == right) {
+                    border-right: 1px solid rgba(#fff, 0.1);
+                } @else {
+                    border-left: 1px solid rgba(#fff, 0.1);
+                }
+            }
+        }
+    }
+    // Light
+    %menu-small-light {
+        background-color: #fff;
+        box-shadow: 0 0 15px 0 rgba(#000, 0.1);
+        a {
+            border-bottom: 1px solid rgba(#000, 0.05);
+            color: #888;
+            &:after {
+                @if ($get-align == right) {
+                    border-right: 1px solid rgba(#000, 0.05);
+                } @else {
+                    border-left: 1px solid rgba(#000, 0.05);
+                }
+            }
+        }
+    }
+
+    // START STYLE
+	// Default
+	%small-default {
+		@extend %menu-small-general;
+        transform: translate(100%, 0);
+        &.#{$get-toggleClass} {
+            transform: translate(0, 0);
+        }
+	}
+    // Style1
+    %small-style1 {
+        @extend %menu-small-general;
+        @extend %menu-small-dark;
+        right: 0;
+        width: 280px;
+        transform: translate(100%, 0);
+        &.#{$get-toggleClass} {
+            transform: translate(0, 0);
+        }
+    }
+    // Style2
+    %small-style2 {
+        @extend %menu-small-general;
+        @extend %menu-small-dark;
+        left: 0;
+        width: 280px;
+        background-color: #111;
+        transform: translate(-100%, 0);
+        &.#{$get-toggleClass} {
+            transform: translate(0, 0);
+        }
+    }
+    // Style3
+    %small-style3 {
+        @extend %menu-small-general;
+        @extend %menu-small-light;
+        right: 0;
+        width: 280px;
+        transform: translate(100%, 0);
+        &.#{$get-toggleClass} {
+            transform: translate(0, 0);
+        }
+    }
+    // Style4
+    %small-style4 {
+        @extend %menu-small-general;
+        @extend %menu-small-light;
+        left: 0;
+        width: 280px;
+        background-color: #111;
+        transform: translate(-100%, 0);
+        &.#{$get-toggleClass} {
+            transform: translate(0, 0);
+        }
+    }
+}
+
+// Effect subMenu
+@mixin menu_effects($option) {
+	$self: wilMenu($option);
+	$get-subMenu-class: map-deep-get($self, 'subMenu', 'class');
+	// Zoom
+	%zoom {
+		.#{$get-subMenu-class} {
+			opacity:  0;
+			visibility: hidden;
+			transform: scale(0);
+		}
+		li {
+			&:hover {
+				> .#{$get-subMenu-class} {
+					opacity: 1;
+					visibility: visible;
+					transform: scale(1);
+				}
+			}
+		}
+	}
+	// Fade
+	%fade {
+		.#{$get-subMenu-class} {
+			opacity:  0;
+			visibility: hidden;
+		}
+		li {
+			&:hover {
+				> .#{$get-subMenu-class} {
+					opacity: 1;
+					visibility: visible;
+				}
+			}
+		}
+	}
+	// FadeUp
+	%fadeUp {
+		.#{$get-subMenu-class} {
+			opacity:  0;
+			visibility: hidden;
+			transform: translateY(40px);
+		}
+		li {
+			&:hover {
+				> .#{$get-subMenu-class} {
+					opacity: 1;
+					visibility: visible;
+					transform: translateY(0);
+				}
+			}
+		}
+	}
+	// FadeDown
+	%fadeDown {
+		.#{$get-subMenu-class} {
+			opacity:  0;
+			visibility: hidden;
+			transform: translateY(-40px);
+		}
+		li {
+			&:hover {
+				> .#{$get-subMenu-class} {
+					opacity: 1;
+					visibility: visible;
+					transform: translateY(0);
+				}
+			}
+		}
+	}
+	// fadeLeft
+	%fadeLeft {
+		.#{$get-subMenu-class} {
+			opacity:  0;
+			visibility: hidden;
+			transform: translateX(-40px);
+		}
+		li {
+			&:hover {
+				> .#{$get-subMenu-class} {
+					opacity: 1;
+					visibility: visible;
+					transform: translateX(0);
+				}
+			}
+		}
+	}
+	// fadeRight
+	%fadeRight {
+		.#{$get-subMenu-class} {
+			opacity:  0;
+			visibility: hidden;
+			transform: translateX(40px);
+		}
+		li {
+			&:hover {
+				> .#{$get-subMenu-class} {
+					opacity: 1;
+					visibility: visible;
+					transform: translateX(0);
+				}
+			}
+		}
+	}
+	// slideUp
+	%slideUp {
+		.#{$get-subMenu-class} {
+			opacity:  0;
+			visibility: hidden;
+			transform: scaleY(0);
+			transform-origin: 50% 100%;
+		}
+		li {
+			&:hover {
+				> .#{$get-subMenu-class} {
+					opacity: 1;
+					visibility: visible;
+					transform: scaleY(1);
+				}
+			}
+		}
+	}
+	// slideDown
+	%slideDown {
+		.#{$get-subMenu-class} {
+			opacity:  0;
+			visibility: hidden;
+			transform: scaleY(0);
+			transform-origin: 50% 0;
+		}
+		li {
+			&:hover {
+				> .#{$get-subMenu-class} {
+					opacity: 1;
+					visibility: visible;
+					transform: scaleY(1);
+				}
+			}
+		}
+	}
+	// slideLeft
+	%slideLeft {
+		.#{$get-subMenu-class} {
+			opacity:  0;
+			visibility: hidden;
+			transform: scaleX(0);
+			transform-origin: 0 50%;
+		}
+		li {
+			&:hover {
+				> .#{$get-subMenu-class} {
+					opacity: 1;
+					visibility: visible;
+					transform: scaleX(1);
+				}
+			}
+		}
+	}
+	// slideRight
+	%slideRight {
+		.#{$get-subMenu-class} {
+			opacity:  0;
+			visibility: hidden;
+			transform: scaleX(0);
+			transform-origin: 100% 50%;
+		}
+		li {
+			&:hover {
+				> .#{$get-subMenu-class} {
+					opacity: 1;
+					visibility: visible;
+					transform: scaleX(1);
+				}
+			}
+		}
+	}
+	// rotateLeftUp
+	%rotateLeftUp {
+		.#{$get-subMenu-class} {
+			opacity:  0;
+			visibility: hidden;
+			transform: rotate(30deg);
+			transform-origin: 0 0;
+		}
+		li {
+			&:hover {
+				> .#{$get-subMenu-class} {
+					opacity: 1;
+					visibility: visible;
+					transform: rotate(0);
+				}
+			}
+		}
+	}
+	// rotateRightUp
+	%rotateRightUp {
+		.#{$get-subMenu-class} {
+			opacity:  0;
+			visibility: hidden;
+			transform: rotate(-30deg);
+			transform-origin: 100% 0;
+		}
+		li {
+			&:hover {
+				> .#{$get-subMenu-class} {
+					opacity: 1;
+					visibility: visible;
+					transform: rotate(0);
+				}
+			}
+		}
+	}
+}
+
+@function menu_sub-menu_align($alignOpt, $option) {
+	$self: wilMenu($option);
+	$get-subMenu-width: map-deep-get($self, 'subMenu', 'width');
+	// $start: '';
+	// $_get-subMenu-width: '';
+	// @if (type-of($get-subMenu-width) == string) {
+	// 	$start: str-index($get-subMenu-width, 'px') - 1;
+	// 	$_get-subMenu-width: unquote(str-slice($get-subMenu-width, 0, $start));
+	// } @else {
+	// 	$_get-subMenu-width: $get-subMenu-width;
+	// }
+	$align: '';
+	@if ($alignOpt == 'left') {
+		$align: 0;
+	} @else if ($alignOpt == 'center') {
+		$align: calc(50% - #{$get-subMenu-width / 2 * 1px});
+	} @else if ($alignOpt == 'right') {
+		$align: calc(100% - #{$get-subMenu-width * 1px});
+	}
+	@return $align;
+}
+
+@mixin menu_sub-menu_position($position, $classsubMenu, $option) {
+	.#{$classsubMenu} {
+		top: 0;
+		@if ($position == 'right') {
+			left: 100%;
+		} @else if ($position == 'left') {
+			left: -100%;
+		}
+	}
+}
+
+@mixin menu_sub-menu($classsubMenu, $option) {
+	$self: wilMenu($option);
+	$get-subMenu-width: map-deep-get($self, 'subMenu', 'width');
+	$get-time: map-deep-get($self, 'subMenu', 'animate', 'time');
+	$get-easing: map-deep-get($self, 'subMenu', 'animate', 'easing');
+	$get-classCurrent: map-deep-get($self, 'currentClass');
+	$get-currentParentClass: map-deep-get($self, 'currentParentClass');
+
+	.#{$classsubMenu} {
+		width: check_number_value($get-subMenu-width, 'px', $option);
+		position: absolute;
+		top: 100%;
+		z-index: -1;
+		left:  menu_sub-menu_align(map-deep-get(wilMenu($option), 'subMenu', 'align'), $option);
+		@each $key, $val in $wilEasing {
+			@if ($get-easing == $key) {
+				$get-easing: $val;
+			}
+		}
+		transition: all check_number_value($get-time, 'ms', $option) $get-easing;
+		@include menu_sub-menu_position(map-deep-get(wilMenu($option), 'subMenu', 'position'), $classsubMenu, $option);
+		li {
+			@include menu_subMenu_arrow($option);
+			> a {
+				$get-subMenu-css: map-remove(map-deep-get($self, 'subMenu', 'css'), 'hover');
+				$get-subMenu-css: map-remove($get-subMenu-css, 'current');
+				// $get-subMenu-css: map-remove($get-subMenu-css, 'transition');
+				@include menu_css($get-subMenu-css, $option);
+
+			}
+			&:hover {
+				> a {
+					@include menu_css(map-deep-get($self, 'subMenu', 'css', 'hover'), $option);
+				}
+			}
+			.#{$get-currentParentClass},
+			.#{$get-classCurrent} {
+				> a {
+					@include menu_css(map-deep-get($self, 'subMenu', 'css', 'current'), $option);
+				}
+			}
+		}
+	}
+}
+
+@mixin menu_for_large_devices($option) {
+	$self: wilMenu($option);
+	$get-align: map-deep-get($self, 'align');
+	$get-menuClass: map-deep-get($self, 'menuClass');
+	$get-subMenu-class: map-deep-get($self, 'subMenu', 'class');
+	$get-theme: map-deep-get($self, 'theme');
+	$get-animate-effect: map-deep-get($self, 'subMenu', 'animate', 'effect');
+    $get-classButtonToggle: map-deep-get($self, 'menuMobile', 'classButtonToggle');
+	$get-classCurrent: map-deep-get($self, 'currentClass');
+	$get-currentParentClass: map-deep-get($self, 'currentParentClass');
+	$get-responsiveByJavascript-enable: map-deep-get($self, 'responsiveByJavascript', 'enable');
+
+    text-align: check_type_of($get-align, $option);
+    li {
+        &:hover {
+            > a {
+                @include menu_css(map-deep-get($self, 'css', 'hover'), $option);
+            }
+        }
+    }
+
+    @include menu_effects($option);
+
+    @include menu_themes($option);
+
+    .#{$get-menuClass} {
+        > li {
+            display: inline-block;
+            @include menu_arrow($option);
+        }
+        a {
+            $get-css: map-remove(map-deep-get($self, 'css'), 'hover');
+            $get-css: map-remove($get-css, 'current');
+            // $get-css: map-remove($get-css, 'transition');
+            @include menu_css($get-css, $option);
+
+            // $get-transition: map-deep-get($self, 'css', 'transition');
+            // $transition-index: index($get-transition, ms);
+            // $transition-length: str-length($get-transition);
+            // $transition-easing: str-slice($get-transition, $transition-index, $transition-length);
+            // $transition-all: str-slice($get-transition, 0, $transition-index);
+            // @each $key, $val in $wilEasing {
+            // 	@if ($transition-easing == $key) {
+            // 		$transition-easing: $val;
+            // 	}
+            // }
+            // transition: $transition-all + ' ' + $transition-easing;
+            // margin: $transition-index;
+        }
+		.#{$get-subMenu-class} {
+			display: block !important;
+
+			.#{$get-currentParentClass}, // Update ver 2.3.1
+			.#{$get-classCurrent} {
+				> a {
+					@include menu_css(map-deep-get($self, 'css', 'current'), $option);
+				}
+			}
+		}
+
+		.#{$get-currentParentClass},
+		.#{$get-classCurrent} {
+			> a {
+				@include menu_css(map-deep-get($self, 'css', 'current'), $option);
+			}
+		}
+
+        @include menu_sub-menu($get-subMenu-class, $option);
+
+        // Themes
+		@extend %large-#{$get-theme};
+        // Effect subMenu
+        @if (map-deep-get($self, 'devTest') == false) {
+            @extend %#{$get-animate-effect};
+        }
+    }
+	@if ($get-responsiveByJavascript-enable == false) {
+		.#{$get-classButtonToggle} {
+			display: none;
+		}
+	}
+}
+
+@mixin menu_small_dev($option) {
+	$self: wilMenu($option);
+	$get-subMenu: map-deep-get($self, 'subMenu', 'class');
+	@if (map-deep-get($self, 'devTest') == true) {
+		transform: none !important;
+		opacity: 1 !important;
+		visibility: visible !important;
+		display: block !important;
+		.#{$get-subMenu} {
+			display: block !important;
+			transform: none !important;
+		}
+	}
+}
+
+@mixin menu_small_settings_css($option) {
+	$self: wilMenu($option);
+	$get-subMenu: map-deep-get($self, 'subMenu', 'class');
+	$get-subMenu-toggleClass: map-deep-get($self, 'menuMobile', 'subMenu', 'toggleClass');
+    $get-toggleSubmenu: map-deep-get($self, 'menuMobile', 'toggleClass');
+	$get-classCurrent: map-deep-get($self, 'currentClass');
+	$get-currentParentClass: map-deep-get($self, 'currentParentClass');
+
+
+	$get-css: map-remove(map-deep-get($self, 'menuMobile', 'css'), 'hover');
+	$get-css: map-remove($get-css, 'toggle');
+	$get-css: map-remove($get-css, 'current');
+	a {
+		@include menu_css($get-css, $option);
+		&:hover {
+			@include menu_css(map-deep-get($self, 'menuMobile', 'css', 'hover'), $option);
+		}
+	}
+	.#{$get-toggleSubmenu} {
+		> a {
+			@include menu_css(map-deep-get($self, 'menuMobile', 'css', 'toggle'), $option);
+		}
+	}
+	.#{$get-currentParentClass},
+	.#{$get-classCurrent} {
+		> a {
+			@include menu_css(map-deep-get($self, 'menuMobile', 'css', 'current'), $option);
+		}
+	}
+	.#{$get-subMenu} {
+		$get-parentClass: map-deep-get($self, 'subMenu', 'parentClass');
+		$get-menuMobile-css: map-remove(map-deep-get($self, 'menuMobile', 'subMenu', 'css'), 'hover');
+		$get-menuMobile-css: map-remove($get-menuMobile-css, 'toggle');
+		$get-menuMobile-css: map-remove($get-menuMobile-css, 'current');
+		$get-menuMobile-css-hover: map-deep-get($self, 'menuMobile', 'subMenu', 'css', 'hover');
+		$get-menuMobile-css-toggle: map-deep-get($self, 'menuMobile', 'subMenu', 'css', 'toggle');
+		$get-menuMobile-css-current: map-deep-get($self, 'menuMobile', 'subMenu', 'css', 'current');
+
+		a {
+			@include menu_css($get-menuMobile-css, $option);
+		}
+		.#{$get-parentClass} {
+			> a {
+				&:hover {
+					@include menu_css($get-menuMobile-css-hover, $option);
+				}
+			}
+			&.#{$get-subMenu-toggleClass} {
+				> a {
+					@include menu_css($get-menuMobile-css-toggle, $option);
+				}
+			}
+			&.#{$get-currentParentClass} {
+				> a {
+					@include menu_css($get-menuMobile-css-current, $option);
+				}
+			}
+		}
+		.#{$get-classCurrent} {
+			> a {
+				@include menu_css($get-menuMobile-css-current, $option);
+			}
+		}
+	}
+}
+
+@mixin menu_small_css_default($option) {
+    $self: wilMenu($option);
+    $get-theme: map-deep-get($self, 'menuMobile', 'theme');
+	@if ($get-theme == 'default') {
+		position: fixed;
+		top: 0;
+		right: 0;
+	}
+	z-index: 99999;
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+@mixin menu_for_small_devices($option) {
+    $self: wilMenu($option);
+	$get-menuClass: map-deep-get($self, 'menuClass');
+    $get-align: map-deep-get($self, 'menuMobile', 'align');
+    $get-width: map-deep-get($self, 'menuMobile', 'width');
+    $get-theme: map-deep-get($self, 'menuMobile', 'theme');
+    $get-background: map-deep-get($self, 'menuMobile', 'background');
+    $get-time: map-deep-get($self, 'menuMobile', 'animate', 'time');
+    $get-easing: map-deep-get($self, 'menuMobile', 'animate', 'easing');
+    $get-classButtonToggle: map-deep-get($self, 'menuMobile', 'classButtonToggle');
+    $get-subMenu: map-deep-get($self, 'subMenu', 'class');
+	$get-responsiveByJavascript-enable: map-deep-get($self, 'responsiveByJavascript', 'enable');
+
+    @include menu_small_themes($option);
+
+
+    .#{$get-menuClass} {
+		@include menu_small_css_default($option);
+        text-align: check_type_of($get-align, $option);
+        width: check_number_value($get-width, 'px', $option);
+        background-color: $get-background;
+        @each $key, $val in $wilEasing {
+			@if ($get-easing == $key) {
+				$get-easing: $val;
+			}
+		}
+		transition: all check_number_value($get-time, 'ms', $option) $get-easing;
+        li {
+            position: relative;
+            @include menu_mobile_arrow($option);
+        }
+
+        // Extend theme
+		@extend %small-#{$get-theme};
+
+		@include menu_small_settings_css($option);
+
+        // DEV TEST
+        @include menu_small_dev($option);
+    }
+	@if ($get-responsiveByJavascript-enable == false) {
+		.#{$get-classButtonToggle} {
+			display: block;
+		}
+	}
+}
+// Menu responsive
+@mixin menu_responsive($option) {
+    $self: wilMenu($option);
+    $get-breakpoint: map-deep-get($self, 'breakpoint');
+	// Menu large
+    @media (min-width: (($get-breakpoint + 1) * 1px)) {
+        @include menu_for_large_devices($option);
+    }
+    // Menu small
+    @media (max-width: ($get-breakpoint * 1px)) {
+        @include menu_for_small_devices($option);
+    }
+}
+
+
+@mixin menu_all_css_default($option) {
+	z-index: 999;
+	ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+		font-size: 0;
+	}
+    li {
+        position: relative;
+        z-index: 9;
+        a {
+            display: block;
+            position: relative;
+			text-decoration: none;
+        }
+    }
+}
+
+@mixin wilMenu($el, $option) {
+	$self: wilMenu($option);
+	$get-responsiveByJavascript-enable: map-deep-get($self, 'responsiveByJavascript', 'enable');
+	$get-responsiveByJavascript-classLarge: map-deep-get($self, 'responsiveByJavascript', 'classLarge');
+	$get-responsiveByJavascript-classSmall: map-deep-get($self, 'responsiveByJavascript', 'classSmall');
+
+	@if ($get-responsiveByJavascript-enable == true) {
+		$elSmall: $el + '.' + $get-responsiveByJavascript-classSmall;
+		$elLarge: $el + '.' + $get-responsiveByJavascript-classLarge;
+		#{$el} {
+			// All css default
+			@include menu_all_css_default($option);
+		}
+		#{$elLarge} {
+			// Menu Large
+			@include menu_for_large_devices($option);
+		}
+		#{$elSmall} {
+			// Menu Small
+			@include menu_for_small_devices($option);
+		}
+
+	} @else {
+
+		#{$el} {
+			// All css default
+			@include menu_all_css_default($option);
+			// Responsive
+			@include menu_responsive($option);
+		}
+	}
+}

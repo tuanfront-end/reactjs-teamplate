@@ -1,0 +1,120 @@
+@import 'styles/abstracts/abstracts.scss';
+
+@mixin handleGridItem($colType, $screenWidth, $width, $gap, $opts) {
+  @if ($screenWidth == 'default') {
+    margin: calc(var(--gap-#{$colType}) / -2);
+    > * {
+      padding: calc(var(--gap-#{$colType}) / 2);
+      width: calc(100% / var(--col-#{$colType}));
+    }
+  } @else {
+    @media(min-width: #{$screenWidth}px) {
+      margin: calc(#{$gap} / -2);
+      > * {
+        padding: calc(#{$gap} / 2);
+        width: calc(100% / #{$width});
+      }
+    }
+  }
+}
+
+@mixin createGrid($selector, $options: ()) {
+  $defaultOptions: (
+    xs: 'default',
+    sm: 768,
+    md: 992,
+    lg: 1170
+  );
+  $opts: if(length($options) > 0, $options, $defaultOptions);
+  $width: 1;
+  $gap: 10;
+  #{$selector} {
+    display: flex;
+    flex-wrap: wrap;
+    @each $colType, $screenWidth in $opts {
+      $width: var(--col-#{$colType}, $width);
+      $gap: var(--gap-#{$colType}, $gap);
+      @include handleGridItem($colType, $screenWidth, $width, $gap, $opts);
+    }
+  }
+}
+
+@include createGrid('.grid', (
+  xs: 'default',
+  sm: 768,
+  md: 992,
+  lg: $container-max-width
+));
+
+// Grid with row
+$grid: (
+  container: (
+    width: $container-max-width,
+    gap: 15
+  ),
+  columns: (
+    max: 12,
+    gap: 30
+  ),
+  breakpoints: (
+    default: xs,
+    sm: 768,
+    md: 992,
+    lg: $container-max-width
+  )
+);
+
+// Map deep get
+@function map-deep-get($map, $keys...) {
+	@each $key in $keys {
+		$map: map-get($map, $key);
+	}
+	@return $map;
+}
+
+$containerWidth: map-deep-get($grid, 'container', 'width');
+$containerGap: map-deep-get($grid, 'container', 'gap');
+$colMax: map-deep-get($grid, 'columns', 'max');
+$colGap: map-deep-get($grid, 'columns', 'gap');
+
+.container {
+  max-width: $containerWidth * 1px;
+  margin: auto;
+}
+.container-fluid {
+  width: 100%;
+}
+.container,
+.container-fluid {
+  padding-left: $containerGap * 1px;
+  padding-right: $containerGap * 1px;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -($colGap / 2) * 1px;
+  margin-right: -($colGap / 2) * 1px;
+}
+[class^="View_col-"] {
+  padding-left: ($colGap / 2) * 1px;
+  padding-right: ($colGap / 2) * 1px;
+}
+
+@mixin column($nameCol) {
+  @for $i from 1 through $colMax {
+    .col-#{$nameCol}-#{$i} {
+      width: (100 * $i) / $colMax * 1%;
+    }
+  }
+}
+
+@each $key, $val in map-get($grid, 'breakpoints') {
+  @if ($key == 'default') {
+    $colDefault: map-deep-get($grid, 'breakpoints', 'default');
+    @include column($colDefault);
+  } @else {
+    @media (min-width: $val * 1px) {
+      @include column($key);
+    }
+  }
+}

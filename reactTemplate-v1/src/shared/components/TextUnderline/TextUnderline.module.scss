@@ -1,0 +1,7 @@
+@import 'styles/abstracts/abstracts.scss';
+
+@include textUnderline('.container', (
+    size: 5,
+    color: $color-primary,
+    bottomSpace: 10
+));

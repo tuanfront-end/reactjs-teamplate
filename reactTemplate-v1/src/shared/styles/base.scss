@@ -1,0 +1,63 @@
+@import 'themes.scss';
+
+$colors: ("primary", "secondary", "tertiary", "quaternary", "quinary", "success", "warning", "danger", "info", "facebook", "twitter", "tumblr", "dribbble", "youtube", "vk", "digg", "reddit", "linkedin", "stumbleupon", "vimeo", "instagram", "pinterest", "behance", "heart", "github", "dark", "dark1", "dark2", "dark3", "dark4", "gray1", "gray2", "gray3", "gray4", "gray5", "light", "transparent");
+
+@mixin colorBuilder($property: 'color') {
+  @each $color in $colors {
+    .__ThemeProvider__ .ui-#{$property}-#{$color} {
+      #{$property}: var(--color-#{$color});
+    }
+    .__ThemeProvider__ .ui-#{$property}-hover-#{$color}:hover {
+      #{$property}: var(--color-#{$color});
+    }
+    .__ThemeProvider__ .ui-#{$property}-prev-#{$color} {
+      #{$property}: var(--color-prev-#{$color});
+    }
+    .__ThemeProvider__ .ui-#{$property}-prev-hover-#{$color}:hover {
+      #{$property}: var(--color-prev-#{$color});
+    }
+  }
+}
+
+html, body {
+  width: auto !important;
+  height: auto !important;
+}
+
+.__ThemeProvider__ {
+  overflow: hidden;
+}
+
+@include colorBuilder('color');
+@include colorBuilder('background-color');
+@include colorBuilder('border-color');
+
+.__ThemeProvider__ .ui-border-style-solid {
+  border-style: solid;
+}
+
+.__ThemeProvider__ .ui-border-style-dashed {
+  border-style: dashed;
+}
+
+.__ThemeProvider__ .ui-border-style-dotted {
+  border-style: dotted;
+}
+
+@each $borderWidth in $border-widths {
+  .__ThemeProvider__ .ui-border-width-#{$borderWidth} {
+    border-width: #{$borderWidth / 10}rem;
+  }
+}
+
+.__ThemeProvider__ .ui-square {
+  border-radius: 0;
+}
+
+.__ThemeProvider__ .ui-round {
+  border-radius: px(10);
+}
+
+.__ThemeProvider__ .ui-pill {
+  border-radius: px(10000);
+}

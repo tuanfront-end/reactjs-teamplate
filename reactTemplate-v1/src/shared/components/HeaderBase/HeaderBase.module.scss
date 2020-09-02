@@ -1,0 +1,25 @@
+@import 'styles/abstracts/abstracts.scss';
+
+.container {
+  height: px(60);
+  transition: all 0.3s ease;
+}
+
+.left {
+  width: 20%;
+}
+
+.center {
+  width: 60%;
+}
+
+.right {
+  width: 20%;
+}
+
+.centerEmpty {
+  .left,
+  .right {
+    width: 50%;
+  }
+}

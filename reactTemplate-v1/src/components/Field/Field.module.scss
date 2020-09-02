@@ -1,0 +1,73 @@
+@import "styles/abstracts/abstracts.scss";
+
+.container {
+  position: relative;
+  margin-bottom: px(15);
+  user-select: none;
+}
+
+.boxed {
+  margin: 0;
+  border-bottom: 1px solid $color-gray-2;
+  background-color: $color-light;
+  .labelWrap {
+    display: block;
+    padding: px(15) 0;
+  }
+}
+
+.message {
+  position: absolute;
+  font-size: px(11);
+  bottom: px(-18);
+  @include autoDirection((
+    left: 0
+  ))
+}
+
+.label {
+  display: block;
+  font-size: px(14);
+  font-weight: 500;
+  margin-bottom: px(4);
+  span {
+    color: $color-danger;
+    @include autoDirection((
+      padding-left: px(3)
+    ))
+  }
+}
+
+.note {
+  display: block;
+  font-size: px(12);
+  color: $color-dark-3;
+  margin-top: px(-2);
+  margin-bottom: px(4);
+}
+
+.spaceBetween {
+  justify-content: space-between;
+}
+
+
+.horizontal {
+  display: flex !important;
+  align-items: center;
+  .label {
+    margin: 0;
+    @include autoDirection((
+      margin-right: px(8)
+    ))
+  }
+}
+
+.reverse {
+  .label {
+    order: 2;
+    margin: 0;
+    @include autoDirection((
+      margin-left: px(8)
+    ))
+  }
+}

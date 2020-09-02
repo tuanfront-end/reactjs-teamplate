@@ -1,0 +1,13 @@
+@import '~antd/dist/antd.css';
+
+@import 'abstracts/abstracts.scss';
+
+@import 'vendors/normalize.scss';
+@import 'vendors/antd.custom.scss';
+
+@import 'base/reset.scss';
+@import 'base/typography.scss';
+
+.ant-skeleton-element {
+  width: auto;
+}

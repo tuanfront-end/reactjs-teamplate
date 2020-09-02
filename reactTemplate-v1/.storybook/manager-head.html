@@ -1,0 +1,16 @@
+
+<style>
+  .sidebar-header [title="Storybook"] {
+    display: none;
+  }
+  #storybook-preview-wrapper iframe {
+    padding: 30px;
+    box-sizing: border-box;
+  }
+</style>
+<script>
+  window.addEventListener('load', () => {
+    const sidebarHeaderEl = document.querySelector('.sidebar-header');
+    sidebarHeaderEl.innerHTML = `<h1>Instagram UI</h1>`;
+  });
+</script>

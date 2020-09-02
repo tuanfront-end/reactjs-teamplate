@@ -1,0 +1,189 @@
+
+// Map deep get
+@function map-deep-get($map, $keys...) {
+	@each $key in $keys {
+		$map: map-get($map, $key);
+	}
+	@return $map;
+}
+
+// Map removes
+@function map-removes($map, $keys...) {
+	@each $key in $keys {
+		$map: map-remove($map, $key);
+	}
+	@return $map;
+}
+
+// Map deep merge
+@function extend($map, $maps.../*, $deep */) {
+	$last: nth($maps, -1);
+	$deep: $last == true;
+	$max: if($deep, length($maps) - 1, length($maps));
+
+  	@for $i from 1 through $max {
+    	$current: nth($maps, $i);
+
+    	@if not $deep {
+      		$map: map-merge($map, $current);
+    	} @else {
+      		@each $key, $value in $current {
+
+	        	@if type-of($value) == "map" and type-of(map-get($map, $key)) == "map" {
+	          		$value: extend(map-get($map, $key), $value, true);
+	        	}
+
+	        	$map: map-merge($map, ($key: $value));
+	      	}
+    	}
+  	}
+
+  	@return $map;
+}
+
+@function str-replace($string, $search, $replace: '') {
+	$index: str-index($string, $search);
+
+	@if $index {
+		@return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+	}
+
+	@return $string;
+}
+
+@function to-string($list, $glue: '', $is-nested: false) {
+  $result: null;
+
+  @for $i from 1 through length($list) {
+    $e: nth($list, $i);
+
+    @if type-of($e) == list {
+      $result: $result#{to-string($e, $glue, true)};
+    }
+
+    @else {
+      $result: if($i != length($list) or $is-nested, $result#{$e}#{$glue}, $result#{$e});
+    }
+  }
+
+  @return $result;
+}
+
+@function loop($list, $value: 1) {
+  $result: ();
+
+  @for $i from 0 to length($list) {
+    $result: append($result, nth($list, ($i - $value) % length($list) + 1));
+  }
+
+  @return $result;
+}
+
+@function reverse($list, $recursive: false) {
+   $result: ();
+
+   @for $i from length($list)*-1 through -1 {
+      @if type-of(nth($list, abs($i))) == list and $recursive {
+        $result: append($result, reverse(nth($list, abs($i)), $recursive));
+      }
+
+      @else {
+        $result: append($result, nth($list, abs($i)));
+      }
+   }
+
+   @return $result;
+}
+
+@function slice($list, $start: 1, $end: length($list)) {
+  $result: null;
+
+  @if type-of($start) != number or type-of($end) != number {
+    @warn "Either $start or $end are not a number for `slice`.";
+  }
+
+  @else if $start > $end {
+    @warn "The start index has to be lesser than or equals to the end index for `slice`.";
+  }
+
+  @else if $start < 1 or $end < 1 {
+    @warn "List indexes must be non-zero integers for `slice`.";
+  }
+
+  @else if $start > length($list) {
+    @warn "List index is #{$start} but list is only #{length($list)} item long for `slice`.";
+  }
+
+  @else if $end > length($list) {
+    @warn "List index is #{$end} but list is only #{length($list)} item long for `slice`.";
+  }
+
+  @else {
+    $result: ();
+
+    @for $i from $start through $end {
+      $result: append($result, nth($list, $i));
+    }
+  }
+
+  @return $result;
+}
+
+@function replace($list, $old-value, $new-value, $recursive: false) {
+  $result: ();
+
+  @for $i from 1 through length($list) {
+    @if type-of(nth($list, $i)) == list and $recursive {
+      $result: append($result, replace(nth($list, $i), $old-value, $new-value, $recursive));
+    }
+
+    @else {
+      @if nth($list, $i) == $old-value {
+        $result: append($result, $new-value);
+      }
+
+      @else {
+        $result: append($result, nth($list, $i));
+      }
+    }
+  }
+
+  @return $result;
+}
+
+@function remove-nth($list, $index) {
+  $result: null;
+
+  @if type-of($index) != number {
+    @warn "$index: #{quote($index)} is not a number for `remove-nth`.";
+  }
+
+  @else if $index == 0 {
+    @warn "List index 0 must be a non-zero integer for `remove-nth`.";
+  }
+
+  @else if abs($index) > length($list) {
+    @warn "List index is #{$index} but list is only #{length($list)} item long for `remove-nth`.";
+  }
+
+  @else {
+    $result: ();
+    $index: if($index < 0, length($list) + $index + 1, $index);
+
+    @for $i from 1 through length($list) {
+      @if $i != $index {
+        $result: append($result, nth($list, $i));
+      }
+    }
+  }
+
+  @return $result;
+}
+
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}

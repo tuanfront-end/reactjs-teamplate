@@ -1,0 +1,27 @@
+@import 'styles/abstracts/abstracts.scss';
+
+.container {
+  &.active {
+    .textRight {
+      background-color: $color-primary;
+      color: #fff;
+    }
+    .textLeft {
+      color: $color-primary;
+    }
+  }
+  &:hover {
+    .textLeft {
+      color: $color-primary;
+    }
+  }
+}
+
+.textRight {
+  font-size: px(12);
+  border-radius: px(6);
+  padding: 0 px(6);
+  @include autoDirection((
+    margin-right: px(10)
+  ))
+}

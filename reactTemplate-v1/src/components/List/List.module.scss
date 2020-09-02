@@ -1,0 +1,10 @@
+.container {
+  composes: flex items-center justify-center from global;
+}
+.vertical {
+  composes: flex-column from global;
+}
+
+.horizontal {
+  flex-wrap: wrap;
+}

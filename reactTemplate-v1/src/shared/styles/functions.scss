@@ -1,0 +1,20 @@
+@function px($pixel, $useUnit: true) {
+  @return $pixel / 10 + unquote(if($useUnit, 'rem', ''));
+}
+
+@function getAspectRatio($width, $height) {
+  @return ($height / $width) * 100%;
+}
+
+@function str-to-list($string, $separator: ' ', $startAt: 1) {
+  $workStr: str-slice($string,$startAt);
+  $list: ();
+  $indexOfFirstSpace: str-index($workStr,$separator);
+  @if $indexOfFirstSpace == null {
+      $list: ($workStr);
+  } @else {
+      $list: (str-slice($workStr, 1, $indexOfFirstSpace - 1));
+      $list: join($list,str-to-list($workStr, $startAt: $indexOfFirstSpace + 1));
+  }
+  @return $list;
+}
